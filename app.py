@@ -62,24 +62,6 @@ def preprocess_imgs(set_name, img_size):
         set_new.append(preprocess_input(img))
     return np.array(set_new)
 
-# Streamlit components below the Gradio interface
-uploaded_file = st.file_uploader("Choose an MRI image", type=["jpg", "jpeg"])
-
-if uploaded_file is not None:
-    # Display the uploaded image
-    st.image(uploaded_file, caption="Uploaded MRI Image.", use_column_width=True)
-
-    # Perform prediction when the "Predict" button is clicked
-    if st.button("Predict"):
-        img_array = preprocess_image(uploaded_file)
-        pred = braintumor_model.predict(img_array)
-        confidence = pred[0][0]
-        result = "Brain Tumor Not Found!" if binary_decision(confidence) == 1 else "Brain Tumor Found!"
-
-        # Display the prediction result with confidence
-        st.success(result)
-        st.markdown(f"Confidence: {confidence:.2%}")
-
 # Gradio interface
 iface = gr.Interface(
     fn=predict_braintumor,
@@ -106,3 +88,21 @@ st.markdown("<hr>", unsafe_allow_html=True)
 
 # Display Gradio interface
 iface.launch()
+
+# Streamlit components below the Gradio interface
+uploaded_file = st.file_uploader("Choose an MRI image", type=["jpg", "jpeg"])
+
+if uploaded_file is not None:
+    # Display the uploaded image
+    st.image(uploaded_file, caption="Uploaded MRI Image.", use_column_width=True)
+
+    # Perform prediction when the "Predict" button is clicked
+    if st.button("Predict"):
+        img_array = preprocess_image(uploaded_file)
+        pred = braintumor_model.predict(img_array)
+        confidence = pred[0][0]
+        result = "Brain Tumor Not Found!" if binary_decision(confidence) == 1 else "Brain Tumor Found!"
+
+        # Display the prediction result with confidence
+        st.success(result)
+        st.markdown(f"Confidence: {confidence:.2%}")
