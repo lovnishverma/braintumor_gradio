@@ -4,7 +4,6 @@ import cv2
 import numpy as np
 from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.vgg16 import preprocess_input
-import threading
 
 # Loading Models
 braintumor_model = load_model('models/brain_tumor_binary.h5')
@@ -63,37 +62,6 @@ def preprocess_imgs(set_name, img_size):
         set_new.append(preprocess_input(img))
     return np.array(set_new)
 
-# Gradio interface
-iface = gr.Interface(
-    fn=predict_braintumor,
-    inputs="image",
-    outputs="text",
-    examples=[
-        ["examples/1_no.jpeg"],
-        ["examples/2_no.jpeg"],
-        ["examples/3_no.jpg"],
-        ["examples/Y1.jpg"],
-        ["examples/Y2.jpg"],
-        ["examples/Y3.jpg"],
-    ],
-    live=True
-)
-
-# Function to launch Gradio interface in a separate thread
-def launch_gradio():
-    iface.launch()
-
-# Display Gradio interface
-st.markdown("<h1 style='text-align: center;'>Gradio Interface</h1>", unsafe_allow_html=True)
-st.markdown(
-    "<p style='text-align: center;'>This is an interactive interface powered by Gradio.</p>",
-    unsafe_allow_html=True
-)
-st.markdown("<hr>", unsafe_allow_html=True)
-
-# Use st_thread to launch Gradio in a separate thread
-st.st_thread(target=launch_gradio)
-
 # Streamlit components below the Gradio interface
 uploaded_file = st.file_uploader("Choose an MRI image", type=["jpg", "jpeg"])
 
@@ -111,3 +79,30 @@ if uploaded_file is not None:
         # Display the prediction result with confidence
         st.success(result)
         st.markdown(f"Confidence: {confidence:.2%}")
+
+# Gradio interface
+iface = gr.Interface(
+    fn=predict_braintumor,
+    inputs="image",
+    outputs="text",
+    examples=[
+        ["examples/1_no.jpeg"],
+        ["examples/2_no.jpeg"],
+        ["examples/3_no.jpg"],
+        ["examples/Y1.jpg"],
+        ["examples/Y2.jpg"],
+        ["examples/Y3.jpg"],
+    ],
+    live=True
+)
+
+# Display Gradio interface
+st.markdown("<h1 style='text-align: center;'>Gradio Interface</h1>", unsafe_allow_html=True)
+st.markdown(
+    "<p style='text-align: center;'>This is an interactive interface powered by Gradio.</p>",
+    unsafe_allow_html=True
+)
+st.markdown("<hr>", unsafe_allow_html=True)
+
+# Display Gradio interface
+iface.launch()
