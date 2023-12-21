@@ -53,7 +53,8 @@ def predict_braintumor(img):
     img_processed = preprocess_image(img)
     pred = braintumor_model.predict(img_processed)
     confidence = pred[0][0]
-    return "Brain Tumor Not Found!" if binary_decision(confidence) == 1 else "Brain Tumor Found!"
+    result = "Brain Tumor Not Found!" if binary_decision(confidence) == 1 else "Brain Tumor Found!"
+    return result
 
 def preprocess_imgs(set_name, img_size):
     set_new = []
@@ -62,29 +63,14 @@ def preprocess_imgs(set_name, img_size):
         set_new.append(preprocess_input(img))
     return np.array(set_new)
 
-# Streamlit components below the Gradio interface
-uploaded_file = st.file_uploader("Choose an MRI image", type=["jpg", "jpeg"])
-
-if uploaded_file is not None:
-    # Display the uploaded image
-    st.image(uploaded_file, caption="Uploaded MRI Image.", use_column_width=True)
-
-    # Perform prediction when the "Predict" button is clicked
-    if st.button("Predict"):
-        img_array = preprocess_image(uploaded_file)
-        pred = braintumor_model.predict(img_array)
-        confidence = pred[0][0]
-        result = "Brain Tumor Not Found!" if binary_decision(confidence) == 1 else "Brain Tumor Found!"
-
-        # Display the prediction result with confidence
-        st.success(result)
-        st.markdown(f"Confidence: {confidence:.2%}")
-
 # Gradio interface
 iface = gr.Interface(
     fn=predict_braintumor,
     inputs="image",
-    outputs="text",
+    outputs=gr.Blocks(
+        html_block=lambda x: f"<h3>{x}</h3>",
+        type_block=lambda x: "text",
+    ),
     examples=[
         ["examples/1_no.jpeg"],
         ["examples/2_no.jpeg"],
@@ -96,27 +82,27 @@ iface = gr.Interface(
     live=True
 )
 
-# Display Gradio interface within a custom block
-with st.markdown("<h1 style='text-align: center;'>Gradio Interface</h1>", unsafe_allow_html=True):
-    with st.markdown("<p style='text-align: center;'>This is an interactive interface powered by Gradio.</p>", unsafe_allow_html=True):
-        with gr.Blocks():
-            gr.HTML(
-                """
-                <div style="display: flex; justify-content: center; align-items: center; text-align: center;">
-                <a href="https://github.com/showlab/MotionDirector" style="margin-right: 20px; text-decoration: none; display: flex; align-items: center;">
-                </a>
-                <div>
-                    <h1>MotionDirector: Motion Customization of Text-to-Video Diffusion Models</h1>
-                    <h5 style="margin: 0;">More MotionDirectors are on the way. Stay tuned 🔥!</h5>
-                     <h5 style="margin: 0;"> If you like our project, please give us a star ✨ on Github for the latest update.</h5>
-                    </br>
-                    <div style="display: flex; justify-content: center; align-items: center; text-align: center;">
-                        <a href="https://arxiv.org/abs/2310.08465"></a>
-                        <a href="https://arxiv.org/abs/2310.08465"><img src="https://img.shields.io/badge/arXiv-2310.08465-b31b1b.svg"></a>&nbsp;&nbsp;
-                        <a href="https://showlab.github.io/MotionDirector"><img src="https://img.shields.io/badge/Project_Page-MotionDirector-green"></a>&nbsp;&nbsp;
-                        <a href="https://github.com/showlab/MotionDirector"><img src="https://img.shields.io/badge/Github-Code-blue"></a>&nbsp;&nbsp;
-                    </div>
-                </div>
-                </div>
-                """
-            )
+# Display Streamlit components
+uploaded_file = st.file_uploader("Choose an MRI image", type=["jpg", "jpeg"])
+
+if uploaded_file is not None:
+    # Display the uploaded image
+    st.image(uploaded_file, caption="Uploaded MRI Image.", use_column_width=True)
+
+    # Perform prediction when the "Predict" button is clicked
+    if st.button("Predict"):
+        result = predict_braintumor(uploaded_file)
+
+        # Display the prediction result with confidence
+        st.success(result)
+
+# Display Gradio interface
+st.markdown("<h1 style='text-align: center;'>Gradio Interface</h1>", unsafe_allow_html=True)
+st.markdown(
+    "<p style='text-align: center;'>This is an interactive interface powered by Gradio.</p>",
+    unsafe_allow_html=True
+)
+st.markdown("<hr>", unsafe_allow_html=True)
+
+# Display Gradio interface
+iface.launch()
