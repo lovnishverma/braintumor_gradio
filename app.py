@@ -97,5 +97,6 @@ iface = gr.Interface(
 )
 
 # Embed Gradio interface within Streamlit using an HTML iframe
-html_code = f'<iframe srcdoc="{iface.launch()}" width="100%" height="600px" frameborder="0"></iframe>'
-st.markdown(html_code, unsafe_allow_html=True)
+st.markdown(f"### Gradio Interface")
+st.markdown(f"*(Note: Gradio Interface may take a moment to load.)*")
+st.gradio(iface)
