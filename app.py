@@ -65,26 +65,25 @@ def preprocess_imgs(set_name, img_size):
 # Streamlit components below the Gradio interface
 uploaded_file = st.file_uploader("Choose an MRI image", type=["jpg", "jpeg"])
 
-if uploaded_file is not None:
-    # Display the uploaded image
-    st.image(uploaded_file, caption="Uploaded MRI Image.", use_column_width=True)
+# Display Gradio interface
+st.markdown("<h1 style='text-align: center;'>Gradio Interface</h1>", unsafe_allow_html=True)
+st.markdown(
+    "<p style='text-align: center;'>This is an interactive interface powered by Gradio.</p>",
+    unsafe_allow_html=True
+)
+st.markdown("<hr>", unsafe_allow_html=True)
 
-    # Perform prediction when the "Predict" button is clicked
-    if st.button("Predict"):
-        img_array = preprocess_image(uploaded_file)
-        pred = braintumor_model.predict(img_array)
-        confidence = pred[0][0]
-        result = "Brain Tumor Not Found!" if binary_decision(confidence) == 1 else "Brain Tumor Found!"
+# Create a placeholder for the Gradio interface
+gradio_placeholder = st.empty()
 
-        # Display the prediction result with confidence
-        st.success(result)
-        st.markdown(f"Confidence: {confidence:.2%}")
+# Create a custom HTML block in Gradio
+html_block = gr.HTML("<p style='text-align: center;'>Prediction result will be displayed here.</p>")
 
 # Gradio interface
 iface = gr.Interface(
     fn=predict_braintumor,
     inputs="image",
-    outputs="text",
+    outputs=html_block,
     examples=[
         ["examples/1_no.jpeg"],
         ["examples/2_no.jpeg"],
@@ -97,15 +96,19 @@ iface = gr.Interface(
 )
 
 # Display Gradio interface
-st.markdown("<h1 style='text-align: center;'>Gradio Interface</h1>", unsafe_allow_html=True)
-st.markdown(
-    "<p style='text-align: center;'>This is an interactive interface powered by Gradio.</p>",
-    unsafe_allow_html=True
-)
-st.markdown("<hr>", unsafe_allow_html=True)
-
-# Create a placeholder for the Gradio interface
-gradio_placeholder = st.empty()
-
-# Display Gradio interface
 iface.launch(gradio_placeholder)
+
+# Streamlit components below the Gradio interface
+if uploaded_file is not None:
+    # Display the uploaded image
+    st.image(uploaded_file, caption="Uploaded MRI Image.", use_column_width=True)
+
+    # Perform prediction when the "Predict" button is clicked
+    if st.button("Predict"):
+        img_array = preprocess_image(uploaded_file)
+        pred = braintumor_model.predict(img_array)
+        confidence = pred[0][0]
+        result = "Brain Tumor Not Found!" if binary_decision(confidence) == 1 else "Brain Tumor Found!"
+
+        # Update the HTML block with the prediction result and confidence
+        html_block.content("<p style='text-align: center;'>Prediction Result: {}</p><p style='text-align: center;'>Confidence: {:.2%}</p>".format(result, confidence))
