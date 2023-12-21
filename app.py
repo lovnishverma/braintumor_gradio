@@ -16,15 +16,15 @@ st.set_page_config(
 )
 
 # Title and description
-title = 'Brain Tumor Detection App'
-description = gr.Markdown(
+st.title('Brain Tumor Detection App')
+st.markdown(
     """Curious about detecting brain tumors in medical images? 
      Give this app a try! Upload an MRI image in JPG or
      PNG format, and discover whether it shows signs of a brain tumor.
      This is an updated version of the Brain Tumor Classifier: 
      [Kaggle Dataset](https://www.kaggle.com/datasets/navoneel/brain-mri-images-for-brain-tumor-detection/)
      """
-).value
+)
 
 # Sidebar with information
 st.sidebar.title("About")
@@ -62,28 +62,6 @@ def preprocess_imgs(set_name, img_size):
         set_new.append(preprocess_input(img))
     return np.array(set_new)
 
-# Gradio interface
-iface = gr.Interface(
-    fn=predict_braintumor,
-    inputs="image",
-    outputs="text",
-    examples=[
-        ["examples/1_no.jpeg"],
-        ["examples/2_no.jpeg"],
-        ["examples/3_no.jpg"],
-        ["examples/Y1.jpg"],
-        ["examples/Y2.jpg"],
-        ["examples/Y3.jpg"],
-    ],
-    live=True
-)
-
-# Display Gradio interface
-st.title("Gradio Interface")
-st.markdown(description)
-with st.empty():
-    iface.launch()
-
 # Streamlit components below the Gradio interface
 uploaded_file = st.file_uploader("Choose an MRI image", type=["jpg", "jpeg"])
 
@@ -101,3 +79,22 @@ if uploaded_file is not None:
         # Display the prediction result with confidence
         st.success(result)
         st.write(f"Confidence: {confidence:.2%}")
+
+# Gradio interface
+iface = gr.Interface(
+    fn=predict_braintumor,
+    inputs="image",
+    outputs="text",
+    examples=[
+        ["examples/1_no.jpeg"],
+        ["examples/2_no.jpeg"],
+        ["examples/3_no.jpg"],
+        ["examples/Y1.jpg"],
+        ["examples/Y2.jpg"],
+        ["examples/Y3.jpg"],
+    ],
+    live=True
+)
+
+# Display Gradio interface
+iface.launch()
