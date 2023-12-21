@@ -81,7 +81,7 @@ if uploaded_file is not None:
         st.markdown(f"Confidence: {confidence:.2%}")
 
 # Gradio interface
-iface = gr.Interface(
+iface = gr_Interface(
     fn=predict_braintumor,
     inputs="image",
     outputs="text",
