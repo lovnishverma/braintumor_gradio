@@ -96,13 +96,5 @@ iface = gr.Interface(
     live=True
 )
 
-# Display Gradio interface
-st.markdown("<h1 style='text-align: center;'>Gradio Interface</h1>", unsafe_allow_html=True)
-st.markdown(
-    "<p style='text-align: center;'>This is an interactive interface powered by Gradio.</p>",
-    unsafe_allow_html=True
-)
-st.markdown("<hr>", unsafe_allow_html=True)
-
-# Display Gradio interface
-iface.launch()
+# Use Gradio's `launch` method with an iframe
+st.markdown(f"<iframe srcdoc='{iface.launch()}' width='100%' height='500px'></iframe>", unsafe_allow_html=True)
