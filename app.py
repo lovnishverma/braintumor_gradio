@@ -4,6 +4,7 @@ import cv2
 import numpy as np
 from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.vgg16 import preprocess_input
+import threading
 
 # Loading Models
 braintumor_model = load_model('models/brain_tumor_binary.h5')
@@ -78,6 +79,10 @@ iface = gr.Interface(
     live=True
 )
 
+# Function to launch Gradio interface in a separate thread
+def launch_gradio():
+    iface.launch()
+
 # Display Gradio interface
 st.markdown("<h1 style='text-align: center;'>Gradio Interface</h1>", unsafe_allow_html=True)
 st.markdown(
@@ -86,8 +91,8 @@ st.markdown(
 )
 st.markdown("<hr>", unsafe_allow_html=True)
 
-# Display Gradio interface
-iface.launch()
+# Use st_thread to launch Gradio in a separate thread
+st.st_thread(target=launch_gradio)
 
 # Streamlit components below the Gradio interface
 uploaded_file = st.file_uploader("Choose an MRI image", type=["jpg", "jpeg"])
