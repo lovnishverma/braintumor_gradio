@@ -4,7 +4,6 @@ import cv2
 import numpy as np
 from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.vgg16 import preprocess_input
-from tensorflow.keras.preprocessing import image
 
 # Loading Models
 braintumor_model = load_model('models/brain_tumor_binary.h5')
@@ -80,7 +79,10 @@ iface = gr.Interface(
 )
 
 # Display Gradio interface
-iface.launch()
+st.title("Gradio Interface")
+st.markdown(description)
+with st.empty():
+    iface.launch()
 
 # Streamlit components below the Gradio interface
 uploaded_file = st.file_uploader("Choose an MRI image", type=["jpg", "jpeg"])
