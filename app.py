@@ -67,9 +67,9 @@ def preprocess_imgs(set_name, img_size):
 iface = gr.Interface(
     fn=predict_braintumor,
     inputs="image",
-    outputs=gr.Blocks(
-        html_block=lambda x: f"<h3>{x}</h3>",
-        type_block=lambda x: "text",
+    outputs=gr.Row(
+        gr.Column(gr.Image(), "Original Image"),
+        gr.Column(gr.HTML(), "Prediction Result"),
     ),
     examples=[
         ["examples/1_no.jpeg"],
@@ -106,3 +106,4 @@ st.markdown("<hr>", unsafe_allow_html=True)
 
 # Display Gradio interface
 iface.launch()
+
