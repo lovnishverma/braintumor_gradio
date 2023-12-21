@@ -19,10 +19,9 @@ st.set_page_config(
 title = "Brain Tumor Detection App"
 
 description = gr.Markdown(
-    """Curious about detecting brain tumors in medical images? 
-     Give this app a try! Upload an MRI image in JPG or
+    """Upload an MRI image in JPG or
      PNG format, and discover whether it shows signs of a brain tumor.
-     This is an updated version of the Brain Tumor Classifier: 
+     This is Dataset of the Brain Tumor Classifier: 
      [Kaggle Dataset](https://www.kaggle.com/datasets/navoneel/brain-mri-images-for-brain-tumor-detection/)
      """).value
 # Function to preprocess the image
