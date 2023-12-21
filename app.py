@@ -4,25 +4,29 @@ import cv2
 import numpy as np
 from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.vgg16 import preprocess_input
-from tensorflow.keras.preprocessing import image
 
 # Loading Models
 braintumor_model = load_model('models/brain_tumor_binary.h5')
 
-# Configuring Streamlit
+# Configure Streamlit
 st.set_page_config(
-    page_title="Brain Tumor Prediction App",
+    page_title="Brain Tumor Detection",
     page_icon=":brain:",
-    layout="centered",
+    layout="wide",
 )
 
-# Streamlit app title and description
-st.title("Brain Tumor Prediction App")
-st.write(
-    "Upload an image, and the app will predict whether a brain tumor is present or not."
+# Title and description
+st.title('Brain Tumor Detection App')
+st.markdown(
+    """Curious about detecting brain tumors in medical images? 
+     Give this app a try! Upload an MRI image in JPG or
+     PNG format, and discover whether it shows signs of a brain tumor.
+     This is an updated version of the Brain Tumor Classifier: 
+     [Kaggle Dataset](https://www.kaggle.com/datasets/navoneel/brain-mri-images-for-brain-tumor-detection/)
+     """, unsafe_allow_html=True  # Make sure to allow HTML rendering
 )
 
-# Add Streamlit sidebar for additional information or options
+# Sidebar with information
 st.sidebar.title("About")
 st.sidebar.info(
     "This app uses a trained model to predict brain tumors from images. "
