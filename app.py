@@ -31,13 +31,6 @@ article = gr.Markdown(
      [Kaggle Dataset](https://www.kaggle.com/datasets/navoneel/brain-mri-images-for-brain-tumor-detection/)"""
 ).value
 
-# Sidebar with information
-st.sidebar.title("About")
-st.sidebar.info(
-    "This app uses a trained model to predict brain tumors from images. "
-    "The model is based on VGG16 architecture."
-)
-
 # Function to preprocess the image
 def preprocess_image(img):
     if isinstance(img, np.ndarray):
@@ -67,7 +60,7 @@ def preprocess_imgs(set_name, img_size):
         set_new.append(preprocess_input(img))
     return np.array(set_new)
 
-# Streamlit components below the Gradio interface
+# Streamlit components
 uploaded_file = st.file_uploader("Choose an MRI image", type=["jpg", "jpeg"])
 
 if uploaded_file is not None:
@@ -113,4 +106,9 @@ st.markdown(
 st.markdown("<hr>", unsafe_allow_html=True)
 
 # Display Gradio interface
+st.markdown("<h2 style='text-align: center;'>Gradio Interface</h2>", unsafe_allow_html=True)
+st.markdown(
+    "<p style='text-align: center;'>This is an interactive interface powered by Gradio.</p>",
+    unsafe_allow_html=True
+)
 iface.launch()
