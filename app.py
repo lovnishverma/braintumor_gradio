@@ -25,12 +25,6 @@ description = gr.Markdown(
      This is an updated version of the Brain Tumor Classifier: 
      [Kaggle Dataset](https://www.kaggle.com/datasets/navoneel/brain-mri-images-for-brain-tumor-detection/)
      """).value
-
-article = gr.Markdown(
-    """This is an updated version of the Brain Tumor Classifier: 
-     [Kaggle Dataset](https://www.kaggle.com/datasets/navoneel/brain-mri-images-for-brain-tumor-detection/)"""
-).value
-
 # Function to preprocess the image
 def preprocess_image(img):
     if isinstance(img, np.ndarray):
@@ -93,7 +87,6 @@ iface = gr.Interface(
         ["examples/Y3.jpg"],
     ],
     description = description,
-    article=article,
     live=True
 )
 
