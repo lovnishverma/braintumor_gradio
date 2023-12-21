@@ -16,16 +16,18 @@ st.set_page_config(
 )
 
 # Title and description
-st.title('Brain Tumor Detection App')
-st.write(
+title = "Brain Tumor Detection App"
+description = gr.Markdown(
     """Curious about detecting brain tumors in medical images? 
      Give this app a try! Upload an MRI image in JPG or
      PNG format, and discover whether it shows signs of a brain tumor.
      This is an updated version of the Brain Tumor Classifier: 
      [Kaggle Dataset](https://www.kaggle.com/datasets/navoneel/brain-mri-images-for-brain-tumor-detection/)
-     """, unsafe_allow_html=True  # Make sure to allow HTML rendering
+     """).value
+article = gr.Markdown(
+    """This is an updated version of the Brain Tumor Classifier: 
+     [Kaggle Dataset](https://www.kaggle.com/datasets/navoneel/brain-mri-images-for-brain-tumor-detection/)"""
 )
-
 # Sidebar with information
 st.sidebar.title("About")
 st.sidebar.info(
@@ -82,6 +84,7 @@ if uploaded_file is not None:
 
 # Gradio interface
 iface = gr.Interface(
+    title = title,
     fn=predict_braintumor,
     inputs="image",
     outputs="text",
@@ -93,6 +96,8 @@ iface = gr.Interface(
         ["examples/Y2.jpg"],
         ["examples/Y3.jpg"],
     ],
+    description = description,
+    article=article,
     live=True
 )
 
