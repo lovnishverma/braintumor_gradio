@@ -17,6 +17,7 @@ st.set_page_config(
 
 # Title and description
 title = "Brain Tumor Detection App"
+
 description = gr.Markdown(
     """Curious about detecting brain tumors in medical images? 
      Give this app a try! Upload an MRI image in JPG or
@@ -24,10 +25,12 @@ description = gr.Markdown(
      This is an updated version of the Brain Tumor Classifier: 
      [Kaggle Dataset](https://www.kaggle.com/datasets/navoneel/brain-mri-images-for-brain-tumor-detection/)
      """).value
+
 article = gr.Markdown(
     """This is an updated version of the Brain Tumor Classifier: 
      [Kaggle Dataset](https://www.kaggle.com/datasets/navoneel/brain-mri-images-for-brain-tumor-detection/)"""
-)
+).value
+
 # Sidebar with information
 st.sidebar.title("About")
 st.sidebar.info(
