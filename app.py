@@ -78,7 +78,7 @@ if uploaded_file is not None:
 
         # Display the prediction result with confidence
         st.success(result)
-        st.write(f"Confidence: {confidence:.2%}")
+        st.markdown(f"Confidence: {confidence:.2%}")
 
 # Gradio interface
 iface = gr.Interface(
@@ -95,6 +95,14 @@ iface = gr.Interface(
     ],
     live=True
 )
+
+# Display Gradio interface
+st.markdown("<h1 style='text-align: center;'>Gradio Interface</h1>", unsafe_allow_html=True)
+st.markdown(
+    "<p style='text-align: center;'>This is an interactive interface powered by Gradio.</p>",
+    unsafe_allow_html=True
+)
+st.markdown("<hr>", unsafe_allow_html=True)
 
 # Display Gradio interface
 iface.launch()
