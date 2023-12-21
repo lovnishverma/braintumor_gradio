@@ -81,7 +81,7 @@ if uploaded_file is not None:
         st.markdown(f"Confidence: {confidence:.2%}")
 
 # Gradio interface
-iface = gr_Interface(
+iface = gr.Interface(
     fn=predict_braintumor,
     inputs="image",
     outputs="text",
@@ -96,7 +96,5 @@ iface = gr_Interface(
     live=True
 )
 
-# Embed Gradio interface within Streamlit using an HTML iframe
-st.markdown(f"### Gradio Interface")
-st.markdown(f"*(Note: Gradio Interface may take a moment to load.)*")
-st.gradio(iface)
+# Embed Gradio interface within Streamlit using st.write
+st.write(iface.launch())
